@@ -59,7 +59,7 @@ tf.paragraphs[0].font.color.rgb = RGBColor(21, 96, 130)  # Setting the font colo
 df = pd.read_excel("reporte_final.xlsx", sheet_name="Controls V8")
 
 # Add slides and lines based on DataFrame rows
-for index, row in df.iterrows():
+for index, row in df.iterrows():    
     if pd.isnull(row.iloc[1]):
         
         #agrego una slide
@@ -115,8 +115,8 @@ for index, row in df.iterrows():
         tf.auto_size = True
 
     else:
-        # si el flag es "Falso" y "no tiene criticidad"
-        if not pd.isnull(row.iloc[11]) and (not pd.isnull(row.iloc[10])):
+        # si el flag es "Falso" y "no tiene criticidad"        
+        if (row.iloc[11] == True) and (not pd.isnull(row.iloc[10])):        
             #si se termina la pagina cambio el top para que empiece de nuevo y creo una slide nueva.
             if top > Cm(16):
                 top = Cm(0.2)
