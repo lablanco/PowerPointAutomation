@@ -56,10 +56,10 @@ tf.vertical_anchor = MSO_ANCHOR.MIDDLE
 tf.paragraphs[0].font.color.rgb = RGBColor(21, 96, 130)  # Setting the font color 
 
 # Read data from reporte.xlsx into pandas DataFrame
-df = pd.read_excel("reporte_final.xlsx", sheet_name="Controls V8")
+df = pd.read_excel("20240418_CSI_Assessments_findings_impacts_recommendation.xlsx", sheet_name="Controls V8")
 
 # Add slides and lines based on DataFrame rows
-for index, row in df.iterrows():
+for index, row in df.iterrows():    
     if pd.isnull(row.iloc[1]):
         
         #agrego una slide
@@ -115,10 +115,10 @@ for index, row in df.iterrows():
         tf.auto_size = True
 
     else:
-        # si el flag es "Falso" y "no tiene criticidad"
-        if not pd.isnull(row.iloc[11]) and (not pd.isnull(row.iloc[10])):
+        # si el flag es "Falso" y "no tiene criticidad"        
+        if (row.iloc[11] == True) and (not pd.isnull(row.iloc[10])):        
             #si se termina la pagina cambio el top para que empiece de nuevo y creo una slide nueva.
-            if top > Cm(16):
+            if top > Cm(15):
                 top = Cm(0.2)
                 #agrego una slide
                 slide = prs.slides.add_slide(blank_slide_layout)
@@ -162,7 +162,7 @@ for index, row in df.iterrows():
 
             # celda de Prioridad
             cell = table.cell(0, 2)
-            cell.text = str(row.iloc[7])
+            cell.text = str(row.iloc[9])[0]
             #add color to the cell.
             cell.text_frame.paragraphs[0].font.size = Pt(14)
             cell.text_frame.paragraphs[0].font.color.rgb = RGBColor(0, 0, 0)
@@ -207,7 +207,7 @@ for index, row in df.iterrows():
             # update_text_of_textbox(prs, 1, tf, texto)
             tf.text = row.iloc[4]  # Change to your desired text
             tf.paragraphs[0].font.name = "Arial Nova"
-            tf.paragraphs[0].font.size = Pt(12)  # Set font size to 14 points
+            tf.paragraphs[0].font.size = Pt(12)  # Set font size to 12 points
             tf.paragraphs[0].font.bold = True
             tf.paragraphs[0].font.color.rgb = RGBColor(0, 0, 0)  # Setting the font color 
 
@@ -230,14 +230,33 @@ for index, row in df.iterrows():
             tf.word_wrap = True
             tf.auto_size = True
 
-            #creo el textbox de la RECOMENDACION *******
+            #creo el textbox del IMPACT *******
             width = Cm(29.76)
-            top = top + height + Cm(0.5)
+            top = top + height + Cm(0.1)
             num_lines = len(row.iloc[6]) // 100 + (len(row.iloc[6]) % 20 > 0)  # This calculates the number of lines needed
             height = Pt(num_lines * 12)  # Assuming 12 points per line, adjust accordingly
             txBox = slide.shapes.add_textbox(left, top, width, height)
             tf = txBox.text_frame
-            tf.text = 'Recommendation: '+str(row.iloc[6])  # Change to your desired text
+            tf.text = 'Impact: '+str(row.iloc[6])  # Change to your desired text
+            # Set the height of the text box
+            txBox.height = height
+            tf.paragraphs[0].font.name = "Arial Nova Light "
+            tf.paragraphs[0].font.size = Pt(12)  # Set font size to 100 points
+            # Set text alignment
+            tf.text_anchor = PP_ALIGN.LEFT
+            tf.vertical_anchor = MSO_ANCHOR.TOP
+            # Set text wrapping
+            tf.word_wrap = True
+            tf.auto_size = True
+
+            #creo el textbox de la RECOMENDACION *******
+            width = Cm(29.76)
+            top = top + height + Cm(0.5)
+            num_lines = len(row.iloc[8]) // 100 + (len(row.iloc[8]) % 20 > 0)  # This calculates the number of lines needed
+            height = Pt(num_lines * 12)  # Assuming 12 points per line, adjust accordingly
+            txBox = slide.shapes.add_textbox(left, top, width, height)
+            tf = txBox.text_frame
+            tf.text = 'Recommendation: '+str(row.iloc[8])  # Change to your desired text
             # Set the height of the text box
             txBox.height = height
             tf.paragraphs[0].font.name = "Arial Nova Light "
